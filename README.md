@@ -11,7 +11,7 @@ Tested and released images are published to dockerhub as [kiefm/terraform-dojo](
 2. Install [Dojo](https://github.com/kudulab/dojo) binary.
 3. Provide a Dojofile:
 ```
-DOJO_DOCKER_IMAGE="kudulab/terraform-dojo:latest"
+DOJO_DOCKER_IMAGE="kiefm/terraform-dojo:latest"
 ```
 4. Create and enter the container by running `dojo` at the root of project.
 5. Work with terraform as usual:

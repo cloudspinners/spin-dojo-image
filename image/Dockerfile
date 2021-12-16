@@ -12,7 +12,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repos
 ############
 
 # Same as at: https://hub.docker.com/r/hashicorp/terraform/~/dockerfile/
-ENV TERRAFORM_VERSION=1.0.11
+ENV TERRAFORM_VERSION=1.1.1
 
 # * font-bitstream-type1 is for graphviz, without it, when generating a png file,
 # the text just ends up being a string of boxes
@@ -125,7 +125,7 @@ RUN mkdir -p /home/dojo/.terraform.d/plugin-cache/ && cd /tmp &&\
 # AWC CLI version 2 changelog: https://github.com/aws/aws-cli/blob/v2/CHANGELOG.rst
 RUN apk add --no-cache unzip gnupg nano
 COPY aws.gpg /opt/aws.gpg
-ENV GLIBC_VER=2.31-r0 AWS_CLI_VERSION=2.4.5
+ENV GLIBC_VER=2.31-r0 AWS_CLI_VERSION=2.4.6
 RUN apk --no-cache add \
         binutils \
         curl \

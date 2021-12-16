@@ -76,6 +76,7 @@ Full spec is [ops-base](https://github.com/kudulab/ops-base)
    * e.g. `./tasks set_version 1.2.3` to set version in CHANGELOG to 1.2.3
  * push to master onto private git server
 1. CI server (GoCD) tests and releases.
+* `./tasks release`
 
 
 ## License

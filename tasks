@@ -34,6 +34,7 @@ image_dir="./image"
 imagerc_filename="imagerc"
 
 function docker_login {
+  [ -f ../.secrets/dockerhub ] && . ../.secrets/dockerhub
   if [ -n "$DOCKERHUB_TOKEN" ]; then
     echo "$DOCKERHUB_TOKEN" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
     return

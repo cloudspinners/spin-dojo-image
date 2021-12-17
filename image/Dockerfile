@@ -161,20 +161,20 @@ RUN curl -sL \
   ./aws/install && \
   rm -rf awscliv2.zip
 
+# So we can run inspec tests
+RUN gem install inspec inspec-bin
+
 COPY terraformrc /home/dojo/.terraformrc
 RUN chown dojo:dojo /home/dojo/.terraformrc
 
 COPY etc_dojo.d/scripts/* /etc/dojo.d/scripts/
 COPY inputrc /etc/inputrc
 
-# So we can run inspec tests
-RUN gem install inspec inspec-bin
-
 # Just for debugging
-# RUN addgroup sudo
-# RUN echo 'dojo:$1$IbdSg3K9$L3cVy0i00L6Jjr3G2cdr00' | chpasswd -e
-# RUN echo '%sudo ALL=(ALL) ALL' > /etc/sudoers.d/sudo
-# RUN adduser dojo sudo
+RUN addgroup sudo
+RUN echo 'dojo:$1$IbdSg3K9$L3cVy0i00L6Jjr3G2cdr00' | chpasswd -e
+RUN echo '%sudo ALL=(ALL) ALL' > /etc/sudoers.d/sudo
+RUN adduser dojo sudo
 
 ENTRYPOINT ["/usr/bin/entrypoint.sh"]
 CMD ["/bin/bash"]

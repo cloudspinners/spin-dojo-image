@@ -1,3 +1,7 @@
+### 0.0.5 (2021-Dec-17)
+
+Start ssh-agent in the container.
+
 ### 0.0.4 (2021-Dec-17)
 
 Not really different, figuring out release and version tagging.

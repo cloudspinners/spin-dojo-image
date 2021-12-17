@@ -168,6 +168,7 @@ COPY terraformrc /home/dojo/.terraformrc
 RUN chown dojo:dojo /home/dojo/.terraformrc
 
 COPY etc_dojo.d/scripts/* /etc/dojo.d/scripts/
+# COPY etc_dojo.d/variables/* /etc/dojo.d/variables/
 COPY inputrc /etc/inputrc
 
 # Just for debugging

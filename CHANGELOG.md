@@ -1,3 +1,7 @@
+### 0.0.4 (2021-Dec-17)
+
+Not really different, figuring out release and version tagging.
+
 ### 0.0.3 (2021-Dec-17)
 
 Added inspec

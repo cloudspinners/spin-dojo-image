@@ -77,6 +77,7 @@ Full spec is [ops-base](https://github.com/kudulab/ops-base)
  * push to master onto private git server
 1. CI server (GoCD) tests and releases.
 * `./tasks release`
+* `./tasks publish`
 
 
 ## License

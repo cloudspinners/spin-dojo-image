@@ -4,14 +4,14 @@
 
 I'm customizing this to be useful for me and my projects, but probably not anyone else.
 
-Tested and released images are published to dockerhub as [kiefm/terraform-dojo](https://hub.docker.com/r/kiefm/terraform-dojo)
+Tested and released images are published to dockerhub as [kiefm/spin-dojo-terraform-aws](https://hub.docker.com/r/kiefm/spin-dojo-terraform-aws)
 
 ## Usage
 1. Setup docker.
 2. Install [Dojo](https://github.com/kudulab/dojo) binary.
 3. Provide a Dojofile:
 ```
-DOJO_DOCKER_IMAGE="kiefm/terraform-dojo:latest"
+DOJO_DOCKER_IMAGE="kiefm/spin-dojo-terraform-aws:latest"
 ```
 4. Create and enter the container by running `dojo` at the root of project.
 5. Work with terraform as usual:

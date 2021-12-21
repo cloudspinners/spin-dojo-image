@@ -36,8 +36,14 @@ if [[ -d ${dojo_identity}/.aws ]]; then
     chown dojo:dojo -R ${dojo_home}/.aws
 fi
 
-if [ -f "${dojo_identity}/.terraformrc" ]; then
-  cp "${dojo_identity}/.terraformrc" "${dojo_home}"
-  chown dojo:dojo  ${dojo_home}/.terraformrc
+if [ -n "${TFE_TOKEN}" ] ;then
+  echo "Adding TFE_TOKEN to .terraformrc"
+  (
+    cat <<ENDOFTOKEN
+credentials "app.terraform.io" {
+  token = "${TFE_TOKEN}"
+}
+ENDOFTOKEN
+  ) >> ${dojo_home}/.terraformrc
 fi
 

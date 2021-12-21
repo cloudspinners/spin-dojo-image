@@ -1,3 +1,5 @@
+### 0.0.7 (2021-Dec-21)
+
 ### 0.0.6 (2021-Dec-21)
 
 Support terraformrc, some packages for shell scripting support

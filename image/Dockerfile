@@ -19,12 +19,14 @@ RUN apk --update add --no-cache \
   curl-dev \
   make \
   jq \
+  yq \
   unzip \
   gnupg \
   nano \
   binutils \
   curl \
-  build-base
+  build-base \
+  gettext
 
 # dojo helper script
 RUN git clone --depth 1 -b 0.10.3 \

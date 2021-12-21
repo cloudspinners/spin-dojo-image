@@ -80,6 +80,8 @@ if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
 
+export PATH="${dojo_work}/bin:${PATH}"
+
 # ssh-agent is helpful when using git inside the container
 eval `ssh-agent`
 

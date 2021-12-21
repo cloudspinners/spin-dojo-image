@@ -35,3 +35,9 @@ if [[ -d ${dojo_identity}/.aws ]]; then
     cp -pr ${dojo_identity}/.aws ${dojo_home}/.aws
     chown dojo:dojo -R ${dojo_home}/.aws
 fi
+
+if [ -f "${dojo_identity}/.terraformrc" ]; then
+  cp "${dojo_identity}/.terraformrc" "${dojo_home}"
+  chown dojo:dojo  ${dojo_home}/.terraformrc
+fi
+

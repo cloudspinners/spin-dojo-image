@@ -1,3 +1,7 @@
+### 0.0.8 (2021-Dec-21)
+
+Fixed issues with git config, mostly down to my use of rcup
+
 ### 0.0.7 (2021-Dec-21)
 
 ### 0.0.6 (2021-Dec-21)

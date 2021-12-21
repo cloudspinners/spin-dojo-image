@@ -1,3 +1,7 @@
+### 0.0.6 (2021-Dec-21)
+
+Support terraformrc, some packages for shell scripting support
+
 ### 0.0.5 (2021-Dec-17)
 
 Start ssh-agent in the container.

@@ -22,7 +22,7 @@ chown -R dojo:dojo  ${dojo_home}/.ssh
 # not obligatory configuration file
 if [ -f "${dojo_identity}/.gitconfig" ]; then
   cp "${dojo_identity}/.gitconfig" "${dojo_home}"
-  chown dojo:dojo  ${dojo_home}/.gitconfig
+  chown dojo:dojo ${dojo_home}/.gitconfig
 fi
 
 # user might be logged into vault

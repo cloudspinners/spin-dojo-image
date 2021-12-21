@@ -179,5 +179,8 @@ RUN echo 'dojo:$1$IbdSg3K9$L3cVy0i00L6Jjr3G2cdr00' | chpasswd -e
 RUN echo '%sudo ALL=(ALL) ALL' > /etc/sudoers.d/sudo
 RUN adduser dojo sudo
 
+RUN mkdir -p /home/dojo/.terraform.d/plugin-cache && \
+  chown -R dojo:dojo /home/dojo/.terraform.d
+
 ENTRYPOINT ["/usr/bin/entrypoint.sh"]
 CMD ["/bin/bash"]

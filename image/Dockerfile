@@ -1,7 +1,7 @@
 FROM ruby:3.0.3-alpine3.15
 
-ENV TERRAFORM_VERSION=1.1.1
-ENV AWS_CLI_VERSION=2.4.6
+ENV TERRAFORM_VERSION=1.1.2
+ENV AWS_CLI_VERSION=2.4.7
 ENV GLIBC_VER=2.31-r0
 
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories

@@ -1,10 +1,12 @@
 #!/bin/bash -e
 
-if [ -n ${GIT_USER_NAME} ] ; then
+set -x
+
+if [ -n "${GIT_USER_NAME}" ] ; then
   git config --system user.name ${GIT_USER_NAME}
 fi
 
-if [ -n ${GIT_USER_EMAIL} ] ; then
+if [ -n "${GIT_USER_EMAIL}" ] ; then
   git config --system user.email ${GIT_USER_EMAIL}
 fi
 

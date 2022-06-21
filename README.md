@@ -1,38 +1,82 @@
-# kief-terraform-dojo
+# spin-dojo-terraform-aws
 
-[Dojo](https://github.com/kudulab/dojo) docker image with [Terraform](https://terraform.io) and supporting tools installed. Copied from [docker-terraform-dojo](https://github.com/kudulab/docker-terraform-dojo).
+This project builds a docker image that you can use with the [dojo](https://github.com/kudulab/dojo) tool to have a consistent environment for working with infrastructure stack projects using [cloudspin tools](https://github.com/kief/spin-tools). It's mainly aimed at local development.
 
-I'm customizing this to be useful for me and my projects, but probably not anyone else.
+So as a stack developer, you set up your stack project to use this dojo image (more info on how to do this below). Then you run the dojo command to start a docker instance which has the various tools and packages installed to run and test your stack code. This avoids you needing to install and configure tools (other than Docker and Dojo), and ensures that everyone who works with the stack code has a consistent local environment, defined as code.
+
+The cloudspin tools give you a consistent way to work with infrastructure stack code across environments, and to integrate multiple stacks into cohesive environments.
+
+This Dojo image is aimed at working with Terraform projects that define infrastructure for AWS.
 
 Tested and released images are published to dockerhub as [kiefm/spin-dojo-terraform-aws](https://hub.docker.com/r/kiefm/spin-dojo-terraform-aws)
 
-## Usage
-1. Setup docker.
-2. Install [Dojo](https://github.com/kudulab/dojo) binary.
-3. Provide a Dojofile:
+
+This project is very much in progress, and currently has limitations that will make it difficult to use out of the box.
+
+
+# How-to guides
+
+## How to use this Dojo image on a project that has it installed already
+
+Prerequisites:
+
+1. Docker (I use colima on my Mac)
+2. [Dojo](https://github.com/kudulab/dojo) (I install it on my Mac with homebrew)
+
+Usage:
+
+Change into the project folder. Make sure it has a Dojofile. Then run 'dojo' to download and start the image. You should end up on a prompt, where you can run `spin-stack` commands.
+
+
+## How to add this Dojo image to a stack project
+
+Create a Dojofile:
+
 ```
 DOJO_DOCKER_IMAGE="kiefm/spin-dojo-terraform-aws:latest"
-```
-4. Create and enter the container by running `dojo` at the root of project.
-5. Work with terraform as usual:
-```bash
-terraform --version
-terraform init
-terraform plan
 ```
 
 By default, current directory in docker container is `/dojo/work`.
 
-## Specification
+
+## How to make changes to and build this Dojo image
+
+Set up docker hub so the image can be built and published.
+
+Set environment variable: `DOCKERHUB_TOKEN`
+
+(I like to do this in a .direnv file)
+
+
+## Lifecycle
+1. In a feature branch:
+ * you make changes
+ * and run tests:
+     * `./tasks build`
+     * `./tasks itest`
+1. You decide that your changes are ready and you:
+ * merge into master branch
+ * run locally:
+   * `./tasks set_version` to set version in CHANGELOG, bump patch version
+   * e.g. `./tasks set_version 1.2.3` to set version in CHANGELOG to 1.2.3
+ * push to master onto private git server
+1. CI server (GoCD) tests and releases.
+* `./tasks release`
+* `./tasks publish`
+
+
+# Reference: What's in this docker image
+
+Check out the image/Dockerfile to understand what's in the image. A summary:
 
  * base image is alpine, to make this image as small as possible
  * terraform binary on the PATH
- * terraform plugins: consul, openstack, aws, null, external, local, template, vault.
  * `jq` to parse JSON from bash scripts
  * `dot` to generate infrastructure graphs from terraform
  * a minimal ssh and git setup - to clone terraform modules
 
-### Configuration
+
+## Configuration
 Those files are used inside the docker image:
 
 1. `~/.ssh/` -- is copied from host to dojo's home `~/.ssh`
@@ -51,50 +95,8 @@ To enable debug output:
 OS_DEBUG=1 TF_LOG=debug
 ```
 
-## Development
-
-### Why not just use official terraform image?
-So that packer-dojo and terraform-dojo are similar and thus easier to maintain.
-
-### Dependencies
-* Bash
-* Docker daemon
-* Dojo
-
 Full spec is [ops-base](https://github.com/kudulab/ops-base)
 
-### Lifecycle
-1. In a feature branch:
- * you make changes
- * and run tests:
-     * `./tasks build`
-     * `./tasks itest`
-1. You decide that your changes are ready and you:
- * merge into master branch
- * run locally:
-   * `./tasks set_version` to set version in CHANGELOG, bump patch version
-   * e.g. `./tasks set_version 1.2.3` to set version in CHANGELOG to 1.2.3
- * push to master onto private git server
-1. CI server (GoCD) tests and releases.
-* `./tasks release`
-* `./tasks publish`
-
-
-## License
-
-Copyright 2021 Kief Morris
-
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
 
 Based on [docker-terraform-dojo](https://github.com/kudulab/docker-terraform-dojo) from Ewa Czechowska, Tomasz Sętkowski
+

@@ -31,5 +31,5 @@ jobs:
           platforms: linux/arm64
           push: true
           tags: user/app:latest
-          context: "{{defaultContext}}:image"
           file: image/Dockerfile
+          build-contexts: project=image

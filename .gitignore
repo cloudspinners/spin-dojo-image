@@ -1,3 +1,7 @@
+.*
+!.gitignore
+!.github
+!.tool-versions
 imagerc*
 releaser
 docker-ops

@@ -29,6 +29,8 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: image
+          file: image/Dockerfile
           platforms: linux/arm64
           push: true
           tags: user/app:latest
+  

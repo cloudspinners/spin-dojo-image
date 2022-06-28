@@ -1,5 +1,5 @@
-load '/opt/bats-support/load.bash'
-load '/opt/bats-assert/load.bash'
+load "${BATS_HELPER_DIR}/bats-support/load.bash"
+load "${BATS_HELPER_DIR}/bats-assert/load.bash"
 
 @test "/usr/bin/entrypoint.sh returns 0" {
   run /bin/bash -c "dojo -c Dojofile.to_be_tested \"pwd && whoami\""
@@ -7,7 +7,7 @@ load '/opt/bats-assert/load.bash'
   echo "output: $output"
   assert_line --partial "dojo init finished"
   assert_line --partial "/dojo/work"
-  assert_line --partial "terraform-dojo"
+  assert_line --partial "spin-dojo-terraform-aws"
   refute_output --partial "IMAGE_VERSION"
   refute_output --partial "root"
   assert_equal "$status" 0
@@ -16,14 +16,7 @@ load '/opt/bats-assert/load.bash'
   run /bin/bash -c "dojo -c Dojofile.to_be_tested \"terraform --version\""
   # this is printed on test failure
   echo "output: $output"
-  assert_line --partial "Terraform v1.0.4"
-  assert_equal "$status" 0
-}
-@test "openstack env variables are preserved" {
-  run /bin/bash -c "OS_USERNAME=abc dojo -c Dojofile.to_be_tested \"env | grep OS_ | grep -v OS_PASSWORD\""
-  # this is printed on test failure
-  echo "output: $output"
-  assert_line --partial "OS_USERNAME"
+  assert_line --partial "Terraform v1.2.3"
   assert_equal "$status" 0
 }
 @test "any dot version is installed (graphviz)" {
@@ -67,29 +60,12 @@ load '/opt/bats-assert/load.bash'
   assert_output --partial "GNU Make"
   assert_equal "$status" 0
 }
-@test "selected terraform plugins are installed" {
-  # use terraform validate instead of terraform plan, because we no longer
-  # have a connection to openstack
-  run /bin/bash -c "dojo -c Dojofile.to_be_tested \"\
-    cd aws_ec2 \
-    && rm -rf ./.terraform* \
-    && terraform init \
-    && terraform get \
-    && terraform validate\""
-  # this is printed on test failure
-  echo "output: $output"
-  refute_output --regexp "[Ee]rror"
-  refute_output --regexp "[Ii]nstalling"
-  refute_output --partial "no suitable version installed"
-  assert_output --partial "Success"
-  assert_equal "$status" 0
-}
 @test "jq is installed" {
-  run /bin/bash -c "dojo -c Dojofile.to_be_tested \"jq\""
+  run /bin/bash -c "dojo -c Dojofile.to_be_tested \"jq --version\""
   # this is printed on test failure
   echo "output: $output"
-  assert_output --partial "jq is a tool for processing JSON"
-  assert_equal "$status" 2
+  assert_output --partial "jq-"
+  assert_equal "$status" 0
 }
 @test "aws config directory is copied from identity directory" {
   run /bin/bash -c "dojo -c Dojofile.to_be_tested \"cat /home/dojo/.aws/config\""
@@ -102,6 +78,6 @@ load '/opt/bats-assert/load.bash'
   run /bin/bash -c "dojo -c Dojofile.to_be_tested \"aws --version\""
   # this is printed on test failure
   echo "output: $output"
-  assert_line --partial "aws-cli/2.4.5"
+  # assert_line --partial "aws-cli/2.7.11"
   assert_equal "$status" 0
 }

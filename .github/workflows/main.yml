@@ -32,4 +32,3 @@ jobs:
           push: true
           tags: user/app:latest
           file: image/Dockerfile
-          context: image

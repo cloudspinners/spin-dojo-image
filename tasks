@@ -68,6 +68,8 @@ case "${command}" in
       ;;
   itest)
       docker_ops::ensure_pulled_image "${image_dir}" "${imagerc_filename}"
+      # Should make this conditional
+      export BATS_HELPER_DIR="$(brew --prefix)/lib"
       echo "Testing image: ${KUDU_DOCKER_IMAGE_URL}"
       echo "DOJO_DOCKER_IMAGE=\"${KUDU_DOCKER_IMAGE_URL}\"" > ./Dojofile.to_be_tested
       echo "DOJO_IDENTITY_OUTER=\"$(pwd)/test/integration/identities/full\"" >> ./Dojofile.to_be_tested

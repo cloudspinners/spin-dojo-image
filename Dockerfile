@@ -32,8 +32,8 @@ RUN git clone --depth 1 -b ${DOJO_VERSION} \
   rm -r /tmp/dojo_git
 
 # dojo user
-COPY bashrc /home/dojo/.bashrc
-COPY profile /home/dojo/.profile
+COPY image/bashrc /home/dojo/.bashrc
+COPY image/profile /home/dojo/.profile
 RUN chown dojo:dojo /home/dojo/.bashrc /home/dojo/.profile
 
 # TODO: Use either curl or wget everywhere consistently, rather than both
@@ -80,7 +80,7 @@ RUN wget \
 RUN apk add gcompat
 
 # OPTION 3: Build my own using https://github.com/sgerrand/docker-glibc-builder. Takes many hours to build, doesn't work.
-# COPY glibc-aarch64-2.35-bin.tar.gz /tmp/
+# COPY image/glibc-aarch64-2.35-bin.tar.gz /tmp/
 # RUN tar xzf /tmp/glibc-aarch64-2.35-bin.tar.gz -C /
 # RUN rm /tmp/glibc-aarch64-2.35-bin.tar.gz
 
@@ -89,7 +89,7 @@ RUN apk add gcompat
 ENV AWS_CLI_VERSION=2.1.39
 # ENV AWS_CLI_VERSION=2.2.0
 ENV CPU_ARCH=aarch64
-COPY aws.gpg /opt/aws.gpg
+COPY image/aws.gpg /opt/aws.gpg
 # TODO: Figure out how to support x86_64 and aarch64 with multi-cpu architecture support
 RUN curl -sL \
     https://awscli.amazonaws.com/awscli-exe-linux-${CPU_ARCH}-${AWS_CLI_VERSION}.zip.sig \
@@ -102,11 +102,11 @@ RUN curl -sL \
   ./aws/install && \
   rm -rf awscliv2.zip
 
-COPY terraformrc /home/dojo/.terraformrc
+COPY image/terraformrc /home/dojo/.terraformrc
 RUN chown dojo:dojo /home/dojo/.terraformrc
 
-COPY etc_dojo.d/scripts/* /etc/dojo.d/scripts/
-COPY inputrc /etc/inputrc
+COPY image/etc_dojo.d/scripts/* /etc/dojo.d/scripts/
+COPY image/inputrc /etc/inputrc
 
 # Just for debugging
 RUN addgroup sudo

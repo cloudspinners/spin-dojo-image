@@ -28,8 +28,7 @@ jobs:
         name: Build and push
         uses: docker/build-push-action@v3
         with:
+          context: image
           platforms: linux/arm64
           push: true
           tags: user/app:latest
-          file: image/Dockerfile
-          build-contexts: project=image

@@ -98,7 +98,7 @@ RUN curl -sL \
     -o "awscliv2.zip" && \
   gpg --import /opt/aws.gpg && \
   gpg --verify awscliv2.sig awscliv2.zip && \
-  unzip awscliv2.zip && \
+  unzip -q awscliv2.zip && \
   ./aws/install && \
   rm -rf awscliv2.zip
 

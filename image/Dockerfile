@@ -1,10 +1,5 @@
 FROM ruby:3.1.2-alpine3.16
 
-ENV TERRAFORM_VERSION=1.2.3
-ENV AWS_CLI_VERSION=2.7.7
-ENV GLIBC_VERSION=2.31-r0
-ENV DOJO_VERSION=0.11.0
-
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
 
 RUN apk --update add --no-cache \
@@ -30,6 +25,7 @@ RUN apk --update add --no-cache \
   gettext
 
 # dojo helper script
+ENV DOJO_VERSION=0.11.0
 RUN git clone --depth 1 -b ${DOJO_VERSION} \
   https://github.com/kudulab/dojo.git /tmp/dojo_git && \
   /tmp/dojo_git/image_scripts/src/install.sh && \
@@ -40,6 +36,8 @@ COPY bashrc /home/dojo/.bashrc
 COPY profile /home/dojo/.profile
 RUN chown dojo:dojo /home/dojo/.bashrc /home/dojo/.profile
 
+# TODO: Use either curl or wget everywhere consistently, rather than both
+
 # install assume-role which is a handy tool
 RUN wget --tries=3 --retry-connrefused --wait=3 --random-wait \
     --quiet --show-progress --progress=bar:force \
@@ -47,7 +45,11 @@ RUN wget --tries=3 --retry-connrefused --wait=3 --random-wait \
   chmod +x ./assume-role-Linux && \
   mv ./assume-role-Linux /usr/bin/assume-role
 
+# So we can run inspec tests
+RUN gem install inspec inspec-bin
+
 # terraform
+ENV TERRAFORM_VERSION=1.2.3
 RUN wget \
     --quiet --show-progress --progress=bar:force \
       https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip && \
@@ -60,34 +62,45 @@ RUN wget \
   unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip -d /bin && \
   rm -f terraform_${TERRAFORM_VERSION}_linux_amd64.zip
 
-# TODO: Use either curl or wget everywhere
+# glibc (needed for awscli)
 
-# glibc
-RUN curl -sL \
-      https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub \
-      -o /etc/apk/keys/sgerrand.rsa.pub && \
-    curl -sLO https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-${GLIBC_VERSION}.apk && \
-    curl -sLO https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-bin-${GLIBC_VERSION}.apk && \
-    apk add --no-cache \
-      glibc-${GLIBC_VERSION}.apk \
-      glibc-bin-${GLIBC_VERSION}.apk && \
-    rm -f glibc-${GLIBC_VERSION}.apk glibc-bin-${GLIBC_VERSION}.apk
+# OPTION 1: Download it. Not compatible with aarch64 (M2 processors)
+# ENV GLIBC_VERSION=2.35-r0
+# RUN curl -sL \
+#       https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub \
+#       -o /etc/apk/keys/sgerrand.rsa.pub && \
+#     curl -sLO https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-${GLIBC_VERSION}.apk && \
+#     curl -sLO https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-bin-${GLIBC_VERSION}.apk && \
+#     apk add --no-cache \
+#       glibc-${GLIBC_VERSION}.apk \
+#       glibc-bin-${GLIBC_VERSION}.apk && \
+#     rm -f glibc-${GLIBC_VERSION}.apk glibc-bin-${GLIBC_VERSION}.apk
+
+# OPTION 2: gcompat. Not compatible with awscli later than 2.1.39
+RUN apk add gcompat
+
+# OPTION 3: Build my own using https://github.com/sgerrand/docker-glibc-builder. Takes many hours to build, doesn't work.
+# COPY glibc-aarch64-2.35-bin.tar.gz /tmp/
+# RUN tar xzf /tmp/glibc-aarch64-2.35-bin.tar.gz -C /
+# RUN rm /tmp/glibc-aarch64-2.35-bin.tar.gz
 
 # awscli
+# ENV AWS_CLI_VERSION=2.7.11
+ENV AWS_CLI_VERSION=2.1.39
+# ENV AWS_CLI_VERSION=2.2.0
+ENV CPU_ARCH=aarch64
 COPY aws.gpg /opt/aws.gpg
+# TODO: Figure out how to support x86_64 and aarch64 with multi-cpu architecture support
 RUN curl -sL \
-    https://awscli.amazonaws.com/awscli-exe-linux-x86_64-${AWS_CLI_VERSION}.zip.sig \
+    https://awscli.amazonaws.com/awscli-exe-linux-${CPU_ARCH}-${AWS_CLI_VERSION}.zip.sig \
     -o awscliv2.sig && \
-  curl -sL "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-${AWS_CLI_VERSION}.zip" \
+  curl -sL "https://awscli.amazonaws.com/awscli-exe-linux-${CPU_ARCH}-${AWS_CLI_VERSION}.zip" \
     -o "awscliv2.zip" && \
   gpg --import /opt/aws.gpg && \
   gpg --verify awscliv2.sig awscliv2.zip && \
   unzip awscliv2.zip && \
   ./aws/install && \
   rm -rf awscliv2.zip
-
-# So we can run inspec tests
-RUN gem install inspec inspec-bin
 
 COPY terraformrc /home/dojo/.terraformrc
 RUN chown dojo:dojo /home/dojo/.terraformrc

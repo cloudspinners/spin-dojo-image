@@ -40,7 +40,7 @@ RUN chown dojo:dojo /home/dojo/.bashrc /home/dojo/.profile
 
 # install assume-role which is a handy tool
 RUN wget --tries=3 --retry-connrefused --wait=3 --random-wait \
-    --quiet --show-progress --progress=bar:force \
+    --quiet \
     https://github.com/remind101/assume-role/releases/download/0.3.2/assume-role-Linux && \
   chmod +x ./assume-role-Linux && \
   mv ./assume-role-Linux /usr/bin/assume-role
@@ -51,9 +51,9 @@ RUN gem install inspec inspec-bin
 # terraform
 ENV TERRAFORM_VERSION=1.2.3
 RUN wget \
-    --quiet --show-progress --progress=bar:force \
+    --quiet \
       https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip && \
-  wget --quiet --show-progress --progress=bar:force \
+  wget --quiet \
     -O terraform_${TERRAFORM_VERSION}_SHA256SUMS \
     https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_SHA256SUMS && \
   grep linux_amd64 terraform_${TERRAFORM_VERSION}_SHA256SUMS \

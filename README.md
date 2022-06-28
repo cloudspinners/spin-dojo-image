@@ -47,22 +47,19 @@ Set environment variable: `DOCKERHUB_TOKEN`
 
 (I like to do this in a .direnv file)
 
+Install bats for running tests (I use [homebrew for bats-core](https://github.com/bats-core/homebrew-bats-core))
+
 
 ## Lifecycle
-1. In a feature branch:
- * you make changes
- * and run tests:
-     * `./tasks build`
-     * `./tasks itest`
-1. You decide that your changes are ready and you:
- * merge into master branch
- * run locally:
-   * `./tasks set_version` to set version in CHANGELOG, bump patch version
-   * e.g. `./tasks set_version 1.2.3` to set version in CHANGELOG to 1.2.3
- * push to master onto private git server
-1. CI server (GoCD) tests and releases.
-* `./tasks release`
-* `./tasks publish`
+
+1. Build locally: `./tasks build_local`
+2. Run tests: `./tasks itest`
+3. Repeat above steps until ready
+4. Update the version in the CHANGELOG: `./tasks set_version x.y.x` to set version in CHANGELOG
+5. Push changes
+6. CI server (GoCD) tests and releases:
+   a. `./tasks release`
+   b. `./tasks publish`
 
 
 # Reference: What's in this docker image

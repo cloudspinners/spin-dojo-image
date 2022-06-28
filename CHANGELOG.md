@@ -1,3 +1,7 @@
+### 0.0.11 (2022-Jun-28)
+
+Image now works (only) on M1 processor, and tests actually pass.
+
 ### 0.0.10 (2022-Jun-21)
 
 ### 0.0.9 (2021-Dec-21)

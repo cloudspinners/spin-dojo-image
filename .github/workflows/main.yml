@@ -30,4 +30,4 @@ jobs:
         with:
           platforms: linux/arm64
           push: true
-          tags: kiefm/spin-dojo-terraform-aws:latest
+          tags: kiefm/spin-dojo-image-base:latest

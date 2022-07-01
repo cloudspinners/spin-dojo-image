@@ -101,6 +101,7 @@ RUN curl -sL \
   unzip -q awscliv2.zip && \
   ./aws/install && \
   rm -rf awscliv2.zip
+RUN aws --version
 
 COPY image/terraformrc /home/dojo/.terraformrc
 RUN chown dojo:dojo /home/dojo/.terraformrc

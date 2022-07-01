@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 env:
-  TEST_TAG: kiefm/spin-dojo-image-base:test
+  TEST_TAG: kiefm/spin-dojo-image-base:latest
 
 jobs:
   docker:

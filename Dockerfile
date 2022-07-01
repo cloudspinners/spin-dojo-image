@@ -108,6 +108,23 @@ RUN chown dojo:dojo /home/dojo/.terraformrc
 COPY image/etc_dojo.d/scripts/* /etc/dojo.d/scripts/
 COPY image/inputrc /etc/inputrc
 
+
+# bats for testing shell commands
+ENV BATS_CORE_VERSION=1.7.0
+RUN cd /tmp && \
+  git clone --depth 1 -b v${BATS_CORE_VERSION} https://github.com/bats-core/bats-core.git && \
+  cd bats-core && \
+  ./install.sh /opt && \
+  rm -r /tmp/bats-core && \
+  ln -s /opt/bin/bats /usr/bin/bats
+
+ENV BATS_SUPPORT_VERSION=0.3.0
+RUN git clone -b v${BATS_SUPPORT_VERSION} https://github.com/bats-core/bats-support.git /opt/bats-support
+
+ENV BATS_ASSERT_VERSION=2.0.0
+RUN git clone -b v${BATS_ASSERT_VERSION} https://github.com/bats-core/bats-assert.git /opt/bats-assertv
+
+
 # Just for debugging
 RUN addgroup sudo
 RUN echo 'dojo:$1$IbdSg3K9$L3cVy0i00L6Jjr3G2cdr00' | chpasswd -e

@@ -5,8 +5,10 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-
   workflow_dispatch:
+
+env:
+  TEST_TAG: kiefm/spin-dojo-image-base:test
 
 jobs:
   docker:
@@ -50,4 +52,4 @@ jobs:
         with:
           platforms: linux/arm64
           push: true
-          tags: kiefm/spin-dojo-image-base:latest
+          tags: ${{ env.TEST_TAG }}

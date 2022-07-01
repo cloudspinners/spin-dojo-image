@@ -122,8 +122,7 @@ ENV BATS_SUPPORT_VERSION=0.3.0
 RUN git clone -b v${BATS_SUPPORT_VERSION} https://github.com/bats-core/bats-support.git /opt/bats-support
 
 ENV BATS_ASSERT_VERSION=2.0.0
-RUN git clone -b v${BATS_ASSERT_VERSION} https://github.com/bats-core/bats-assert.git /opt/bats-assertv
-
+RUN git clone -b v${BATS_ASSERT_VERSION} https://github.com/bats-core/bats-assert.git /opt/bats-assert
 
 # Just for debugging
 RUN addgroup sudo
@@ -133,6 +132,13 @@ RUN adduser dojo sudo
 
 RUN mkdir -p /home/dojo/.terraform.d/plugin-cache && \
   chown -R dojo:dojo /home/dojo/.terraform.d
+
+# Self tests
+RUN mkdir /opt/self-test
+COPY test/self/*  /opt/self-test/
+RUN echo "KSM1"
+RUN ls -alF /opt/
+RUN echo "KSM2"
 
 ENTRYPOINT ["/usr/bin/entrypoint.sh"]
 CMD ["/bin/bash"]

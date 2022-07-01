@@ -1,4 +1,4 @@
-# spin-dojo-terraform-aws
+# spin-dojo-image-base
 
 This project builds a docker image that you can use with the [dojo](https://github.com/kudulab/dojo) tool to have a consistent environment for working with infrastructure stack projects using [cloudspin tools](https://github.com/kief/spin-tools). It's mainly aimed at local development.
 
@@ -8,7 +8,7 @@ The cloudspin tools give you a consistent way to work with infrastructure stack 
 
 This Dojo image is aimed at working with Terraform projects that define infrastructure for AWS.
 
-Tested and released images are published to dockerhub as [kiefm/spin-dojo-terraform-aws](https://hub.docker.com/r/kiefm/spin-dojo-terraform-aws)
+Tested and released images are published to dockerhub as [kiefm/spin-dojo-image-base](https://hub.docker.com/r/kiefm/spin-dojo-image-base)
 
 
 This project is very much in progress, and currently has limitations that will make it difficult to use out of the box.
@@ -33,7 +33,7 @@ Change into the project folder. Make sure it has a Dojofile. Then run 'dojo' to 
 Create a Dojofile:
 
 ```
-DOJO_DOCKER_IMAGE="kiefm/spin-dojo-terraform-aws:latest"
+DOJO_DOCKER_IMAGE="kiefm/spin-dojo-image-base:latest"
 ```
 
 By default, current directory in docker container is `/dojo/work`.

@@ -28,7 +28,7 @@ if [[ ! -f $SECRET_OPS_TAR_FILE ]];then
 fi
 source $SECRET_OPS_FILE
 
-image_name="kiefm/spin-dojo-terraform-aws"
+image_name="kiefm/spin-dojo-image-base"
 image_registry="dockerhub"
 image_dir="./"
 imagerc_filename="./image/imagerc"
@@ -45,6 +45,17 @@ function docker_login {
   fi
   dockerhub_user=$(vault read -field=user secret/$vault_user_path/dockerhub)
   vault read -field=password secret/$vault_user_path/dockerhub | docker login --username $dockerhub_user --password-stdin
+}
+
+prepare_test_dojofile()
+{
+  docker_ops::ensure_pulled_image "${image_dir}" "${imagerc_filename}"
+  # Should make this conditional
+  export BATS_HELPER_DIR="$(brew --prefix)/lib"
+  echo "Test image: ${KUDU_DOCKER_IMAGE_URL}"
+  echo "DOJO_DOCKER_IMAGE=\"${KUDU_DOCKER_IMAGE_URL}\"" > ./Dojofile.to_be_tested
+  echo "DOJO_IDENTITY_OUTER=\"$(pwd)/test/integration/identities/full\"" >> ./Dojofile.to_be_tested
+  echo "DOJO_WORK_OUTER=$(pwd)/test/integration/test_dojo_work" >> ./Dojofile.to_be_tested
 }
 
 command="$1"
@@ -67,14 +78,12 @@ case "${command}" in
       docker_ops::push "${image_dir}" "${imagerc_filename}"
       ;;
   itest)
-      docker_ops::ensure_pulled_image "${image_dir}" "${imagerc_filename}"
-      # Should make this conditional
-      export BATS_HELPER_DIR="$(brew --prefix)/lib"
-      echo "Testing image: ${KUDU_DOCKER_IMAGE_URL}"
-      echo "DOJO_DOCKER_IMAGE=\"${KUDU_DOCKER_IMAGE_URL}\"" > ./Dojofile.to_be_tested
-      echo "DOJO_IDENTITY_OUTER=\"$(pwd)/test/integration/identities/full\"" >> ./Dojofile.to_be_tested
-      echo "DOJO_WORK_OUTER=$(pwd)/test/integration/test_dojo_work" >> ./Dojofile.to_be_tested
+      prepare_test_dojofile
       time bats "$(pwd)/test/integration/end_user"
+      ;;
+  self_test)
+      prepare_test_dojofile
+      dojo -c ./Dojofile.to_be_tested "time bats /opt/self-test"
       ;;
   example)
       docker_ops::ensure_pulled_image "${image_dir}" "${imagerc_filename}"

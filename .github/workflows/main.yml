@@ -39,7 +39,7 @@ jobs:
       -
         name: Test
         run: |
-          echo "DOJO_DOCKER_IMAGE=\"${{ env.TEST_TAG }\"" > ./Dojofile.to_be_tested
+          echo "DOJO_DOCKER_IMAGE=${{ env.TEST_TAG }}" > ./Dojofile.to_be_tested
           echo "DOJO_IDENTITY_OUTER=./test/integration/identities/full" >> ./Dojofile.to_be_tested
           echo "DOJO_WORK_OUTER=./test/integration/test_dojo_work" >> ./Dojofile.to_be_tested
           dojo -c ./Dojofile.to_be_tested "time bats /opt/self-test"

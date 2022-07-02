@@ -38,50 +38,6 @@ RUN chown dojo:dojo /home/dojo/.bashrc /home/dojo/.profile
 
 # TODO: Use either curl or wget everywhere consistently, rather than both
 
-
-# glibc (needed for awscli)
-
-# OPTION 1: Download it. Not compatible with aarch64 (M2 processors)
-# ENV GLIBC_VERSION=2.35-r0
-# RUN curl -sL \
-#       https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub \
-#       -o /etc/apk/keys/sgerrand.rsa.pub && \
-#     curl -sLO https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-${GLIBC_VERSION}.apk && \
-#     curl -sLO https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-bin-${GLIBC_VERSION}.apk && \
-#     apk add --no-cache \
-#       glibc-${GLIBC_VERSION}.apk \
-#       glibc-bin-${GLIBC_VERSION}.apk && \
-#     rm -f glibc-${GLIBC_VERSION}.apk glibc-bin-${GLIBC_VERSION}.apk
-
-# OPTION 2: gcompat. Not compatible with awscli later than 2.1.39
-RUN apk add gcompat
-
-# OPTION 3: Build my own using https://github.com/sgerrand/docker-glibc-builder. Takes many hours to build, doesn't work.
-# COPY image/glibc-aarch64-2.35-bin.tar.gz /tmp/
-# RUN tar xzf /tmp/glibc-aarch64-2.35-bin.tar.gz -C /
-# RUN rm /tmp/glibc-aarch64-2.35-bin.tar.gz
-
-# awscli
-# ENV AWS_CLI_VERSION=2.7.11
-ENV AWS_CLI_VERSION=2.1.39
-# ENV AWS_CLI_VERSION=2.2.0
-ENV CPU_ARCH=x86_64
-COPY image/aws.gpg /opt/aws.gpg
-# TODO: Figure out how to support x86_64 and aarch64 with multi-cpu architecture support
-RUN curl -sL \
-    https://awscli.amazonaws.com/awscli-exe-linux-${CPU_ARCH}-${AWS_CLI_VERSION}.zip.sig \
-    -o awscliv2.sig && \
-  curl -sL "https://awscli.amazonaws.com/awscli-exe-linux-${CPU_ARCH}-${AWS_CLI_VERSION}.zip" \
-    -o "awscliv2.zip" && \
-  gpg --import /opt/aws.gpg && \
-  gpg --verify awscliv2.sig awscliv2.zip && \
-  unzip -q awscliv2.zip && \
-  ./aws/install && \
-  rm -rf awscliv2.zip
-RUN uname -a
-RUN aws --version
-
-
 # install assume-role which is a handy tool
 RUN wget --tries=3 --retry-connrefused --wait=3 --random-wait \
     --quiet \
@@ -127,6 +83,51 @@ RUN git clone -b v${BATS_SUPPORT_VERSION} https://github.com/bats-core/bats-supp
 
 ENV BATS_ASSERT_VERSION=2.0.0
 RUN git clone -b v${BATS_ASSERT_VERSION} https://github.com/bats-core/bats-assert.git /opt/bats-assert
+
+# glibc (needed for awscli)
+
+# OPTION 1: Download it. Gives symbol not found errors
+# ENV GLIBC_VERSION=2.35-r0
+# RUN curl -sL \
+#       https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub \
+#       -o /etc/apk/keys/sgerrand.rsa.pub && \
+#     curl -sLO https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-${GLIBC_VERSION}.apk && \
+#     curl -sLO https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-bin-${GLIBC_VERSION}.apk && \
+#     curl -sLO https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-i18n-${GLIBC_VERSION}.apk && \
+#     apk add --no-cache \
+#       glibc-${GLIBC_VERSION}.apk \
+#       glibc-bin-${GLIBC_VERSION}.apk \
+#       glibc-i18n-${GLIBC_VERSION}.apk && \
+#     rm -f glibc-${GLIBC_VERSION}.apk glibc-bin-${GLIBC_VERSION}.apk glibc-i18n-${GLIBC_VERSION}.apk
+
+# OPTION 2: gcompat. Not compatible with awscli later than 2.1.39
+RUN apk add gcompat
+
+# OPTION 3: Build my own using https://github.com/sgerrand/docker-glibc-builder. Takes many hours to build, doesn't work.
+# COPY image/glibc-aarch64-2.35-bin.tar.gz /tmp/
+# RUN tar xzf /tmp/glibc-aarch64-2.35-bin.tar.gz -C /
+# RUN rm /tmp/glibc-aarch64-2.35-bin.tar.gz
+
+# awscli
+# ENV AWS_CLI_VERSION=2.7.12
+ENV AWS_CLI_VERSION=2.1.39
+# ENV AWS_CLI_VERSION=2.2.0
+ENV CPU_ARCH=x86_64
+COPY image/aws.gpg /opt/aws.gpg
+# TODO: Figure out how to support x86_64 and aarch64 with multi-cpu architecture support
+RUN curl -sL \
+    https://awscli.amazonaws.com/awscli-exe-linux-${CPU_ARCH}-${AWS_CLI_VERSION}.zip.sig \
+    -o awscliv2.sig && \
+  curl -sL "https://awscli.amazonaws.com/awscli-exe-linux-${CPU_ARCH}-${AWS_CLI_VERSION}.zip" \
+    -o "awscliv2.zip" && \
+  gpg --import /opt/aws.gpg && \
+  gpg --verify awscliv2.sig awscliv2.zip && \
+  unzip -q awscliv2.zip && \
+  ./aws/install && \
+  rm -rf awscliv2.zip
+RUN uname -a
+RUN aws --version
+
 
 # Just for debugging
 RUN addgroup sudo

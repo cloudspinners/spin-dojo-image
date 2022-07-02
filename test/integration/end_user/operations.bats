@@ -1,6 +1,12 @@
 load "${BATS_HELPER_DIR}/bats-support/load.bash"
 load "${BATS_HELPER_DIR}/bats-assert/load.bash"
 
+@test "running under the expected cpu architecture" {
+  run /bin/bash -c "dojo -c Dojofile.to_be_tested \"uname -m\""
+  echo "output: $output"
+  assert_line --partial "x86_64"
+  assert_equal "$status" 0
+}
 @test "/usr/bin/entrypoint.sh returns 0" {
   run /bin/bash -c "dojo -c Dojofile.to_be_tested \"pwd && whoami\""
   # this is printed on test failure

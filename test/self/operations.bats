@@ -1,6 +1,12 @@
 load "/opt/bats-support/load.bash"
 load "/opt/bats-assert/load.bash"
 
+@test "running under the expected cpu architecture" {
+  run uname -m
+  echo "output: $output"
+  assert_line --partial "x86_64"
+  assert_equal "$status" 0
+}
 @test "correct terraform version is installed" {
   run terraform --version
   echo "output: $output"

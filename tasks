@@ -73,6 +73,7 @@ case "${command}" in
   build_local)
       image_tag=$(git rev-parse HEAD)
       docker_ops::docker_build "${image_dir}" "${imagerc_filename}" "${image_name}" "${image_tag}" "${image_registry}"
+      prepare_test_dojofile
       ;;
   build)
       docker_login
@@ -80,11 +81,9 @@ case "${command}" in
       docker_ops::push "${image_dir}" "${imagerc_filename}"
       ;;
   itest)
-      prepare_test_dojofile
       time bats "$(pwd)/test/integration/end_user"
       ;;
   self_test)
-      prepare_test_dojofile
       dojo -c ./Dojofile.to_be_tested "time bats /opt/self-test"
       ;;
   example)

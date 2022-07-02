@@ -49,7 +49,7 @@ RUN wget --tries=3 --retry-connrefused --wait=3 --random-wait \
 RUN gem install inspec inspec-bin
 
 # terraform
-ENV TERRAFORM_VERSION=1.2.3
+ENV TERRAFORM_VERSION=1.2.4
 RUN wget \
     --quiet \
       https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip && \

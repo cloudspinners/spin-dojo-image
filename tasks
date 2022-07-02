@@ -32,6 +32,7 @@ image_name="kiefm/spin-dojo-image-base"
 image_registry="dockerhub"
 image_dir="./"
 imagerc_filename="./image/imagerc"
+docker_build_options="--platform linux/amd64"
 
 function docker_login {
   if [ -n "$DOCKERHUB_TOKEN" ]; then
@@ -56,6 +57,7 @@ prepare_test_dojofile()
   echo "DOJO_DOCKER_IMAGE=\"${KUDU_DOCKER_IMAGE_URL}\"" > ./Dojofile.to_be_tested
   echo "DOJO_IDENTITY_OUTER=\"$(pwd)/test/integration/identities/full\"" >> ./Dojofile.to_be_tested
   echo "DOJO_WORK_OUTER=$(pwd)/test/integration/test_dojo_work" >> ./Dojofile.to_be_tested
+  echo "DOJO_DOCKER_OPTIONS=\"--platform linux/amd64\""
 }
 
 command="$1"

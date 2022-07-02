@@ -35,7 +35,7 @@ jobs:
         with:
           context: .
           load: true
-          platforms: linux/arm64
+          platforms: linux/amd64
           tags: ${{ env.TEST_TAG }}
       -
         name: Install dojo
@@ -49,13 +49,13 @@ jobs:
           echo "DOJO_DOCKER_IMAGE=${{ env.TEST_TAG }}" > ./Dojofile.to_be_tested
           echo "DOJO_IDENTITY_OUTER=./test/integration/identities/full" >> ./Dojofile.to_be_tested
           echo "DOJO_WORK_OUTER=./test/integration/test_dojo_work" >> ./Dojofile.to_be_tested
-          ./bin/dojo --docker-options="--platform linux/arm64" \
+          ./bin/dojo --docker-options="--platform linux/amd64" \
             -c ./Dojofile.to_be_tested \
             "time bats /opt/self-test"
       -
         name: Build and push
         uses: docker/build-push-action@v3
         with:
-          platforms: linux/arm64
+          platforms: linux/amd64
           push: true
           tags: kiefm/spin-dojo-image-base:latest

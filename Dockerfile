@@ -65,7 +65,7 @@ RUN apk add gcompat
 # ENV AWS_CLI_VERSION=2.7.11
 ENV AWS_CLI_VERSION=2.1.39
 # ENV AWS_CLI_VERSION=2.2.0
-ENV CPU_ARCH=aarch64
+ENV CPU_ARCH=x86_64
 COPY image/aws.gpg /opt/aws.gpg
 # TODO: Figure out how to support x86_64 and aarch64 with multi-cpu architecture support
 RUN curl -sL \
@@ -79,7 +79,7 @@ RUN curl -sL \
   ./aws/install && \
   rm -rf awscliv2.zip
 RUN uname -a
-# RUN aws --version
+RUN aws --version
 
 
 # install assume-role which is a handy tool
@@ -140,9 +140,6 @@ RUN mkdir -p /home/dojo/.terraform.d/plugin-cache && \
 # Self tests
 RUN mkdir /opt/self-test
 COPY test/self/*  /opt/self-test/
-RUN echo "KSM1"
-RUN ls -alF /opt/
-RUN echo "KSM2"
 
 ENTRYPOINT ["/usr/bin/entrypoint.sh"]
 CMD ["/bin/bash"]

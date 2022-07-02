@@ -1,3 +1,7 @@
+### 0.0.12 (2022-Jul-02)
+
+Switched image to use arm64 processor emulation, even when on an M1. Upgrade terraform 1.2.4.
+
 ### 0.0.11 (2022-Jun-28)
 
 Image now works (only) on M1 processor, and tests actually pass.

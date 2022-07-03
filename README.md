@@ -1,34 +1,13 @@
 # spin-dojo-image-base
 
-This project builds a docker image that you can use with the [dojo](https://github.com/kudulab/dojo) tool to have a consistent environment for working with infrastructure stack projects using [cloudspin tools](https://github.com/kief/spin-tools). It's mainly aimed at local development.
-
-So as a stack developer, you set up your stack project to use this dojo image (more info on how to do this below). Then you run the dojo command to start a docker instance which has the various tools and packages installed to run and test your stack code. This avoids you needing to install and configure tools (other than Docker and Dojo), and ensures that everyone who works with the stack code has a consistent local environment, defined as code.
-
-The cloudspin tools give you a consistent way to work with infrastructure stack code across environments, and to integrate multiple stacks into cohesive environments.
-
-This Dojo image is aimed at working with Terraform projects that define infrastructure for AWS.
+This project builds a docker image that you can use with the [dojo](https://github.com/kudulab/dojo) tool to have a consistent local development environment for working with infrastructure code, with useful tools preinstalled.
 
 Tested and released images are published to dockerhub as [kiefm/spin-dojo-image-base](https://hub.docker.com/r/kiefm/spin-dojo-image-base)
 
 
-This project is very much in progress, and currently has limitations that will make it difficult to use out of the box.
-
-
 # How-to guides
 
-## How to use this Dojo image on a project that has it installed already
-
-Prerequisites:
-
-1. Docker (I use colima on my Mac)
-2. [Dojo](https://github.com/kudulab/dojo) (I install it on my Mac with homebrew)
-
-Usage:
-
-Change into the project folder. Make sure it has a Dojofile. Then run 'dojo' to download and start the image. You should end up on a prompt, where you can run `spin-stack` commands.
-
-
-## How to add this Dojo image to a stack project
+## How to add the Dojo image to a project
 
 Create a Dojofile:
 
@@ -36,7 +15,19 @@ Create a Dojofile:
 DOJO_DOCKER_IMAGE="kiefm/spin-dojo-image-base:latest"
 ```
 
-By default, current directory in docker container is `/dojo/work`.
+By default, the current directory in the docker instance is `/dojo/work`.
+
+
+## How to use the Dojo image
+
+Prerequisites:
+
+1. Docker (I use colima to install it on my Mac)
+2. [Dojo](https://github.com/kudulab/dojo) (I install it on my Mac with homebrew)
+
+Usage:
+
+Change into the project folder. Make sure it has a Dojofile. Then run 'dojo' to download and start the image. You should end up on a prompt, where you can run commands.
 
 
 ## How to make changes to and build this Dojo image
@@ -57,16 +48,14 @@ Install bats for running tests (I use [homebrew for bats-core](https://github.co
 3. Repeat above steps until ready
 4. Update the version in the CHANGELOG: `./tasks set_version x.y.x` to set version in CHANGELOG
 5. Push changes
-6. CI server (GoCD) tests and releases:
-   a. `./tasks release`
-   b. `./tasks publish`
+6. Run `./tasks release` and `./tasks publish`
 
 
 # Reference: What's in this docker image
 
 Check out the image/Dockerfile to understand what's in the image. A summary:
 
- * base image is alpine, to make this image as small as possible
+ * base image is alpine Linux, to make this image as small as possible
  * terraform binary on the PATH
  * `jq` to parse JSON from bash scripts
  * `dot` to generate infrastructure graphs from terraform

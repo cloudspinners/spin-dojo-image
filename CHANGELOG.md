@@ -1,3 +1,7 @@
+### 0.0.13 (2022-Jul-04)
+
+Added localstack and python
+
 ### 0.0.12 (2022-Jul-02)
 
 Switched image to use arm64 processor emulation, even when on an M1. Upgrade terraform 1.2.4.

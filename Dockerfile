@@ -2,7 +2,7 @@ FROM ruby:3.1.2-alpine3.16
 
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
 
-RUN apk --update add --no-cache \
+RUN apk add --update --no-cache \
   bash \
   shadow \
   sudo \
@@ -22,7 +22,11 @@ RUN apk --update add --no-cache \
   binutils \
   curl \
   build-base \
+  py3-pip \
+  python3-dev \
   gettext
+
+RUN ln -sf python3 /usr/bin/python
 
 # dojo helper script
 ENV DOJO_VERSION=0.11.0
@@ -128,6 +132,9 @@ RUN curl -sL \
 RUN uname -a
 RUN aws --version
 
+# localstack
+RUN su - dojo -c "python3 -m pip install localstack"
+ENV PATH="/home/dojo/.local/bin:${PATH}"
 
 # Just for debugging
 RUN addgroup sudo

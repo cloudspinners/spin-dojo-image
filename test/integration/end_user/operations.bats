@@ -89,3 +89,8 @@ load "${BATS_HELPER_DIR}/bats-assert/load.bash"
 @test "bats-assert is installed" {
   run /bin/bash -c "dojo -c Dojofile.to_be_tested \"[ -f /opt/bats-assert/load.bash ]\""
 }
+@test "localstack is installed" {
+  run /bin/bash -c "dojo -c Dojofile.to_be_tested \"localstack --help\""
+  echo "output: $output"
+  assert_equal "$status" 0
+}

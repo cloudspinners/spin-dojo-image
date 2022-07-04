@@ -78,3 +78,8 @@ load "/opt/bats-assert/load.bash"
 @test "bats-assert is installed" {
   run [ -f /opt/bats-assert/load.bash ]
 }
+@test "localstack is installed" {
+  run /bin/bash -c "localstack --help"
+  echo "output: $output"
+  assert_equal "$status" 0
+}

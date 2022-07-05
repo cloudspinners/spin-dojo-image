@@ -75,18 +75,21 @@ COPY image/inputrc /etc/inputrc
 
 # bats for testing shell commands
 ENV BATS_CORE_VERSION=1.7.0
+ENV BATS_HELPER_DIR=/opt
+
 RUN cd /tmp && \
   git clone --depth 1 -b v${BATS_CORE_VERSION} https://github.com/bats-core/bats-core.git && \
   cd bats-core && \
-  ./install.sh /opt && \
+  ./install.sh ${BATS_HELPER_DIR} && \
   rm -r /tmp/bats-core && \
   ln -s /opt/bin/bats /usr/bin/bats
 
 ENV BATS_SUPPORT_VERSION=0.3.0
-RUN git clone -b v${BATS_SUPPORT_VERSION} https://github.com/bats-core/bats-support.git /opt/bats-support
+RUN git clone -b v${BATS_SUPPORT_VERSION} https://github.com/bats-core/bats-support.git ${BATS_HELPER_DIR}/bats-support
 
 ENV BATS_ASSERT_VERSION=2.0.0
-RUN git clone -b v${BATS_ASSERT_VERSION} https://github.com/bats-core/bats-assert.git /opt/bats-assert
+RUN git clone -b v${BATS_ASSERT_VERSION} https://github.com/bats-core/bats-assert.git ${BATS_HELPER_DIR}/bats-assert
+
 
 # glibc (needed for awscli)
 
@@ -146,8 +149,8 @@ RUN mkdir -p /home/dojo/.terraform.d/plugin-cache && \
   chown -R dojo:dojo /home/dojo/.terraform.d
 
 # Self tests
-RUN mkdir /opt/self-test
-COPY test/self/*  /opt/self-test/
+RUN mkdir -p /opt/spin-dojo/test
+COPY test/self/ /opt/spin-dojo/test/
 
 ENTRYPOINT ["/usr/bin/entrypoint.sh"]
 CMD ["/bin/bash"]

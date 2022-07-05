@@ -85,7 +85,7 @@ case "${command}" in
       time bats "$(pwd)/test/integration/end_user"
       ;;
   self_test)
-      dojo -c ./Dojofile.to_be_tested "time bats /opt/self-test"
+      dojo -c ./Dojofile.to_be_tested "time bats /opt/spin-dojo/test"
       ;;
   example)
       docker_ops::ensure_pulled_image "${image_dir}" "${imagerc_filename}"

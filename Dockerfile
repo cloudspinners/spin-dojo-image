@@ -52,23 +52,6 @@ RUN wget --tries=3 --retry-connrefused --wait=3 --random-wait \
 # So we can run inspec tests
 RUN gem install inspec inspec-bin
 
-# terraform
-ENV TERRAFORM_VERSION=1.2.4
-RUN wget \
-    --quiet \
-      https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip && \
-  wget --quiet \
-    -O terraform_${TERRAFORM_VERSION}_SHA256SUMS \
-    https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_SHA256SUMS && \
-  grep linux_amd64 terraform_${TERRAFORM_VERSION}_SHA256SUMS \
-    > mySHA256SUM.txt && \
-  sha256sum -cs mySHA256SUM.txt && \
-  unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip -d /bin && \
-  rm -f terraform_${TERRAFORM_VERSION}_linux_amd64.zip
-
-COPY image/terraformrc /home/dojo/.terraformrc
-RUN chown dojo:dojo /home/dojo/.terraformrc
-
 COPY image/etc_dojo.d/scripts/* /etc/dojo.d/scripts/
 COPY image/inputrc /etc/inputrc
 
@@ -145,8 +128,25 @@ RUN echo 'dojo:$1$IbdSg3K9$L3cVy0i00L6Jjr3G2cdr00' | chpasswd -e
 RUN echo '%sudo ALL=(ALL) ALL' > /etc/sudoers.d/sudo
 RUN adduser dojo sudo
 
+# terraform
+ENV TERRAFORM_VERSION=1.2.4
+RUN wget \
+    --quiet \
+      https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip && \
+  wget --quiet \
+    -O terraform_${TERRAFORM_VERSION}_SHA256SUMS \
+    https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_SHA256SUMS && \
+  grep linux_amd64 terraform_${TERRAFORM_VERSION}_SHA256SUMS \
+    > mySHA256SUM.txt && \
+  sha256sum -cs mySHA256SUM.txt && \
+  unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip -d /bin && \
+  rm -f terraform_${TERRAFORM_VERSION}_linux_amd64.zip
+
+COPY image/terraformrc /home/dojo/.terraformrc
+COPY image/terraform-providers.tf /home/dojo/
 RUN mkdir -p /home/dojo/.terraform.d/plugin-cache && \
-  chown -R dojo:dojo /home/dojo/.terraform.d
+    chown -R dojo:dojo /home/dojo/.terraformrc /home/dojo/terraform-providers.tf /home/dojo/.terraform.d
+RUN /bin/su - dojo -c 'terraform -chdir=/home/dojo init -backend=false'
 
 # Self tests
 RUN mkdir -p /opt/spin-dojo/test

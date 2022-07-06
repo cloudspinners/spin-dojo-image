@@ -46,9 +46,8 @@ Install bats for running tests (I use [homebrew for bats-core](https://github.co
 1. Build locally: `./tasks build_local`
 2. Run tests: `./tasks itest`
 3. Repeat above steps until ready
-4. Update the version in the CHANGELOG: `./tasks set_version x.y.x` to set version in CHANGELOG
-5. Push changes
-6. Run `./tasks release` and `./tasks publish`
+4. Push changes to build and publish a new "latest"
+5. Edit the CHANGELOG and increment the version number in the first line to trigger a new release
 
 
 # Reference: What's in this docker image

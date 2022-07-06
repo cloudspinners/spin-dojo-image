@@ -1,0 +1,38 @@
+name: Release
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'CHANGELOG.md'
+    workflow_dispatch:
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Publish package to docker hub
+        run: |
+          ./tasks release
+          ./tasks publish
+      - name: version
+        run: echo "::set-output name=version::$(./tasks get_version)"
+
+  release:
+    runs-on: ubuntu-latest
+    needs: docker
+    steps:
+      - name: Create release in github repository
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: v${{needs.docker.outputs.version}}
+          body: |
+            See the CHANGELOG for details

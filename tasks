@@ -68,6 +68,9 @@ case "${command}" in
       set +u
       releaser::bump_changelog_version "$2" "$3"
       ;;
+  get_version)
+      releaser::get_last_version_from_whole_changelog
+      ;;
   verify_version)
       releaser::verify_release_ready
       ;;

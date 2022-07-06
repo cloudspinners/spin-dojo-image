@@ -1,3 +1,7 @@
+### 0.0.16 (2022-Jul-06)
+
+Trigger release to debug the automation.
+
 ### 0.0.15 (2022-Jul-06)
 
 Trigger release to test the automation.

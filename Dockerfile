@@ -3,28 +3,29 @@ FROM ruby:3.1.2-alpine3.16
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
 
 RUN apk add --update --no-cache \
-  bash \
-  shadow \
-  sudo \
-  wget \
-  git \
-  graphviz \
-  font-bitstream-type1 \
-  openssh-client \
+bash \
+  binutils \
+  build-base \
+  curl \
   curl \
   curl-dev \
-  make \
-  jq \
-  yq \
-  unzip \
+  font-bitstream-type1 \
+  gettext \
+  git \
   gnupg \
+  graphviz \
+  jq \
+  make \
   nano \
-  binutils \
-  curl \
-  build-base \
+  openssh-client \
   py3-pip \
   python3-dev \
-  gettext
+  shadow \
+  sudo \
+  tree \
+  unzip \
+  wget \
+  yq
 
 RUN ln -sf python3 /usr/bin/python
 

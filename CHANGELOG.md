@@ -1,3 +1,7 @@
+### 0.0.20 (2022-Jul-06)
+
+Build the image before trying to publish it
+
 ### 0.0.19 (2022-Jul-06)
 
 Trigger another release for more debugging

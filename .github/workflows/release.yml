@@ -20,6 +20,7 @@ jobs:
           DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
         run: |
+          ./tasks build_local
           ./tasks release
           ./tasks publish
       - name: version

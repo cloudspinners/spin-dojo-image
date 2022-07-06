@@ -65,4 +65,5 @@ jobs:
         with:
           platforms: linux/amd64
           push: true
+          build-args: EXTERNAL_VERSION_NUMBER=${{ env.VERSION_NUMBER }}
           tags: kiefm/spin-dojo-image-base:latest

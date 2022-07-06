@@ -111,6 +111,13 @@ case "${command}" in
       echo "cwd=$(pwd)"
       ls -alF .
       echo "docker_ops::ensure_pulled_image ${image_dir} ${imagerc_filename}"
+      if [ -d ${image_dir} ] ; then
+        echo "Yes ${image_dir} is there"
+        echo "ls -alF ./image:"
+        ls -alF ./image
+      else
+        echo "No ${image_dir} is not there"
+      fi
       if [ -f ${image_dir}/${imagerc_filename} ] ; then
         echo "${image_dir}/${imagerc_filename} seems fine to me"
       else

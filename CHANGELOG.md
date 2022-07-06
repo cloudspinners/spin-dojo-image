@@ -1,3 +1,7 @@
+### 0.0.21 (2022-Jul-06)
+
+Make the release workflow include the stuff in the CI workflow
+
 ### 0.0.20 (2022-Jul-06)
 
 Build the image before trying to publish it

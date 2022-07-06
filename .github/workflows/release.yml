@@ -22,8 +22,7 @@ jobs:
       -
         name: Get version
         id: version
-        run: |
-          echo "VERSION_NUMBER=$(./tasks get_version)" >> $GITHUB_ENV
+        run: echo "VERSION_NUMBER=$(./tasks get_version)" >> $GITHUB_ENV
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -66,6 +65,7 @@ jobs:
         with:
           platforms: linux/amd64
           push: true
+          build-args: EXTERNAL_VERSION_NUMBER=${{ env.VERSION_NUMBER }}
           tags: |
             kiefm/spin-dojo-image-base:latest
             kiefm/spin-dojo-image-base:${{ env.VERSION_NUMBER }}

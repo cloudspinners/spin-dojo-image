@@ -1,3 +1,7 @@
+### 0.0.25 (2022-Jul-06)
+
+Set SPIN_DOJO_BASE_VERSION variable in the container.
+
 ### 0.0.24 (2022-Jul-06)
 
 Fix syntax error in workflow

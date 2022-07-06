@@ -1,3 +1,7 @@
+### 0.0.23 (2022-Jul-06)
+
+Use environment variable for version number
+
 ### 0.0.22 (2022-Jul-06)
 
 See if we can get the version number dynamically

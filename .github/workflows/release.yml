@@ -9,6 +9,7 @@ on:
 
 env:
   TEST_TAG: kiefm/spin-dojo-image-base:test
+  VERSION_NUMBER: _unset_
 
 jobs:
   docker:
@@ -55,9 +56,7 @@ jobs:
       - 
         name: Get version
         id: version
-        outputs:
-          version: ${{ steps.version.outputs.version }}
-        run: echo "::set-output name=version::$(./tasks get_version)"
+        run: echo "VERSION_NUMBER=$(./tasks get_version)" >> $GITHUB_ENV
       -
         name: Build and push
         uses: docker/build-push-action@v3
@@ -69,5 +68,5 @@ jobs:
           push: true
           tags: |
             kiefm/spin-dojo-image-base:latest
-            kiefm/spin-dojo-image-base:${{ steps.version.outputs.version }}
+            kiefm/spin-dojo-image-base:${{ env.VERSION_NUMBER }}
 

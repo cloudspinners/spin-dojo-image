@@ -1,6 +1,6 @@
 ### 0.0.14 (2022-Jul-06)
 
-Minor changes, mainly working on release management automation
+Minor changes, mainly working on release management automation.
 
 ### 0.0.13 (2022-Jul-04)
 

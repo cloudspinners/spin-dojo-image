@@ -107,9 +107,15 @@ case "${command}" in
       docker_login
       echo "Get version from changelog"
       version=$(releaser::get_last_version_from_whole_changelog "${changelog_file}")
-      echo "docker_ops::ensure_pulled_image ${image_dir} ${imagerc_filename}"
+      echo "This script: $0 ($(realpath $0))"
       echo "cwd=$(pwd)"
       ls -alF .
+      echo "docker_ops::ensure_pulled_image ${image_dir} ${imagerc_filename}"
+      if [ -f ${image_dir}/${imagerc_filename} ] ; then
+        echo "${image_dir}/${imagerc_filename} seems fine to me"
+      else
+        echo "Actually, ${image_dir}/${imagerc_filename} is not there"
+      fi
       docker_ops::ensure_pulled_image "${image_dir}" "${imagerc_filename}"
       docker_ops::retag_push "${image_dir}"  "${imagerc_filename}" "${image_name}" "${version}" "${image_registry}"
       ;;

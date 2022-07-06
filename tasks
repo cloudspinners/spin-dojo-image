@@ -32,8 +32,8 @@ source $SECRET_OPS_FILE
 
 image_name="kiefm/spin-dojo-image-base"
 image_registry="dockerhub"
-image_dir="./"
-imagerc_filename="./image/imagerc"
+image_dir="."
+imagerc_filename="image/imagerc"
 docker_build_options="--platform linux/amd64"
 
 function docker_login {
@@ -107,14 +107,15 @@ case "${command}" in
       docker_login
       echo "Get version from changelog"
       version=$(releaser::get_last_version_from_whole_changelog "${changelog_file}")
+
       echo "This script: $0 ($(realpath $0))"
       echo "cwd=$(pwd)"
+      echo "ls -alF ."
       ls -alF .
-      echo "docker_ops::ensure_pulled_image ${image_dir} ${imagerc_filename}"
+      echo "ls -alF ./image"
+      ls -alF ./image
       if [ -d ${image_dir} ] ; then
         echo "Yes ${image_dir} is there"
-        echo "ls -alF ./image:"
-        ls -alF ./image
       else
         echo "No ${image_dir} is not there"
       fi
@@ -123,6 +124,7 @@ case "${command}" in
       else
         echo "Actually, ${image_dir}/${imagerc_filename} is not there"
       fi
+      echo "docker_ops::ensure_pulled_image ${image_dir} ${imagerc_filename}"
       docker_ops::ensure_pulled_image "${image_dir}" "${imagerc_filename}"
       docker_ops::retag_push "${image_dir}"  "${imagerc_filename}" "${image_name}" "${version}" "${image_registry}"
       ;;

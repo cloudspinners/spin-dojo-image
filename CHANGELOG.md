@@ -1,3 +1,7 @@
+### 0.0.22 (2022-Jul-06)
+
+See if we can get the version number dynamically
+
 ### 0.0.21 (2022-Jul-06)
 
 Make the release workflow include the stuff in the CI workflow

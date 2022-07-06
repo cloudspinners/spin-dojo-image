@@ -53,49 +53,21 @@ jobs:
             -c ./Dojofile.to_be_tested \
             "time bats /opt/spin-dojo/test"
       - 
-        name: version
+        name: Get version
+        id: version
+        outputs:
+          version: ${{ steps.version.outputs.version }}
         run: echo "::set-output name=version::$(./tasks get_version)"
       -
         name: Build and push
         uses: docker/build-push-action@v3
+        inputs:
+          version:
+            description: Release version
         with:
           platforms: linux/amd64
           push: true
           tags: |
             kiefm/spin-dojo-image-base:latest
-            kiefm/spin-dojo-image-base:0.0.21
+            kiefm/spin-dojo-image-base:${{ steps.version.outputs.version }}
 
-
-# jobs:
-#   docker:
-#     runs-on: ubuntu-latest
-#     outputs:
-#       version: ${{ steps.version.outputs.version }}
-#     steps:
-#       - name: Checkout
-#         uses: actions/checkout@v3
-#       - name: Publish package to docker hub
-#         env:
-#           DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
-#           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-#         run: |
-#           ./tasks build_local
-#           ./tasks release
-#           ./tasks publish
-#       - name: version
-#         run: echo "::set-output name=version::$(./tasks get_version)"
-
-#   release:
-#     runs-on: ubuntu-latest
-#     needs: docker
-#     steps:
-#       - name: Create release in github repository
-#         id: create_release
-#         uses: actions/create-release@v1
-#         env:
-#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#         with:
-#           tag_name: ${{ github.ref }}
-#           release_name: v${{needs.docker.outputs.version}}
-#           body: |
-#             See the CHANGELOG for details

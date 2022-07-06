@@ -4,7 +4,7 @@ on:
   push:
     branches: [ "main" ]
     paths:
-      - 'CHANGELOG.md'
+      - CHANGELOG.md
     workflow_dispatch:
 
 env:
@@ -14,6 +14,7 @@ env:
 jobs:
   docker:
     runs-on: ubuntu-latest
+
     steps:
       -
         name: Checkout
@@ -39,6 +40,12 @@ jobs:
           platforms: linux/amd64
           tags: ${{ env.TEST_TAG }}
       -
+        name: Get version
+        id: version
+        run: |
+          echo "VERSION_NUMBER=$(./tasks get_version)" >> $GITHUB_ENV
+          echo ${{ env.VERSION_NUMBER }} > /etc/spin-dojo-version
+      -
         name: Install dojo
         run: |
           mkdir -p ./bin
@@ -53,10 +60,6 @@ jobs:
           ./bin/dojo --docker-options="--platform linux/amd64" \
             -c ./Dojofile.to_be_tested \
             "time bats /opt/spin-dojo/test"
-      -
-        name: Get version
-        id: version
-        run: echo "VERSION_NUMBER=$(./tasks get_version)" >> $GITHUB_ENV
       -
         name: Build and push
         uses: docker/build-push-action@v3

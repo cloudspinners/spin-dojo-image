@@ -38,6 +38,10 @@ jobs:
           platforms: linux/amd64
           tags: ${{ env.TEST_TAG }}
       -
+        name: Set version
+        id: version
+        run: echo "$(./tasks get_version)-$( date "+%Y%m%d%H%M%S")" > /etc/spin-dojo-version
+      -
         name: Install dojo
         run: |
           mkdir -p ./bin

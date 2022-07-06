@@ -1,3 +1,7 @@
+### 0.0.24 (2022-Jul-06)
+
+Fix syntax error in workflow
+
 ### 0.0.23 (2022-Jul-06)
 
 Use environment variable for version number

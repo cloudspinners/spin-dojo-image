@@ -153,5 +153,10 @@ RUN /bin/su - dojo -c 'terraform -chdir=/home/dojo init -backend=false'
 RUN mkdir -p /opt/spin-dojo/test
 COPY test/self/ /opt/spin-dojo/test/
 
+ARG EXTERNAL_VERSION_NUMBER not_set
+ENV SPIN_DOJO_BASE_VERSION=$EXTERNAL_VERSION_NUMBER
+RUN echo "EXTERNAL_VERSION_NUMBER = $EXTERNAL_VERSION_NUMBER"
+RUN echo "SPIN_DOJO_BASE_VERSION = $SPIN_DOJO_BASE_VERSION"
+
 ENTRYPOINT ["/usr/bin/entrypoint.sh"]
 CMD ["/bin/bash"]

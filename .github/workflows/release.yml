@@ -20,6 +20,11 @@ jobs:
         name: Checkout
         uses: actions/checkout@v3
       -
+        name: Get version
+        id: version
+        run: |
+          echo "VERSION_NUMBER=$(./tasks get_version)" >> $GITHUB_ENV
+      -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       -
@@ -38,13 +43,8 @@ jobs:
           context: .
           load: true
           platforms: linux/amd64
+          build-args: EXTERNAL_VERSION_NUMBER=${{ env.VERSION_NUMBER }}
           tags: ${{ env.TEST_TAG }}
-      -
-        name: Get version
-        id: version
-        run: |
-          echo "VERSION_NUMBER=$(./tasks get_version)" >> $GITHUB_ENV
-          echo ${{ env.VERSION_NUMBER }} > /etc/spin-dojo-version
       -
         name: Install dojo
         run: |

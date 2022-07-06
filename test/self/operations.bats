@@ -1,6 +1,9 @@
 load "/opt/bats-support/load.bash"
 load "/opt/bats-assert/load.bash"
 
+@test "SPIN_DOJO_BASE_VERSION environment variable is set" {
+  [ -n "${SPIN_DOJO_BASE_VERSION}" ]
+}
 @test "running under the expected cpu architecture" {
   run uname -m
   echo "output: $output"

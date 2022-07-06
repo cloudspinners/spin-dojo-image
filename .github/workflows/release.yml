@@ -53,7 +53,7 @@ jobs:
           ./bin/dojo --docker-options="--platform linux/amd64" \
             -c ./Dojofile.to_be_tested \
             "time bats /opt/spin-dojo/test"
-      - 
+      -
         name: Get version
         id: version
         run: echo "VERSION_NUMBER=$(./tasks get_version)" >> $GITHUB_ENV

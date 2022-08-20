@@ -119,10 +119,6 @@ RUN curl -sL \
 RUN uname -a
 RUN aws --version
 
-# localstack
-RUN su - dojo -c "python3 -m pip install localstack"
-ENV PATH="/home/dojo/.local/bin:${PATH}"
-
 # Just for debugging
 RUN addgroup sudo
 RUN echo 'dojo:$1$IbdSg3K9$L3cVy0i00L6Jjr3G2cdr00' | chpasswd -e

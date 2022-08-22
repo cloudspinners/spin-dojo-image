@@ -21,7 +21,7 @@ load "${BATS_HELPER_DIR}/bats-assert/load.bash"
 @test "correct terraform version is installed" {
   run /bin/bash -c "dojo -c Dojofile.to_be_tested \"terraform --version\""
   echo "output: $output"
-  assert_line --partial "Terraform v1.2.4"
+  assert_line --partial "Terraform v1.2.7"
   assert_equal "$status" 0
 }
 @test "any dot version is installed (graphviz)" {
@@ -88,9 +88,4 @@ load "${BATS_HELPER_DIR}/bats-assert/load.bash"
 }
 @test "bats-assert is installed" {
   run /bin/bash -c "dojo -c Dojofile.to_be_tested \"[ -f /opt/bats-assert/load.bash ]\""
-}
-@test "localstack is installed" {
-  run /bin/bash -c "dojo -c Dojofile.to_be_tested \"localstack --help\""
-  echo "output: $output"
-  assert_equal "$status" 0
 }

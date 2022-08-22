@@ -80,10 +80,8 @@ if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
 
-# This is a temporary measure, eventually the tools should be managed
-# and installed somewhere normal
-if [ -d ${dojo_work}/spin-tools/bin ] ; then
-  export PATH="${dojo_work}/spin-tools/bin:${PATH}"
+if [ -d ${dojo_work}/bin ] ; then
+  export PATH="${dojo_work}/bin:${PATH}"
 fi
 
 # ssh-agent is helpful when using git inside the container

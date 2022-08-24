@@ -116,6 +116,8 @@ RUN curl -sL \
   unzip -q awscliv2.zip && \
   ./aws/install && \
   rm -rf awscliv2.zip
+ENV AWS_RETRY_MODE=standard
+ENV AWS_MAX_ATTEMPTS=10
 RUN uname -a
 RUN aws --version
 

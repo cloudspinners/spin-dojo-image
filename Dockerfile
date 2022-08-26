@@ -14,6 +14,7 @@ bash \
   git \
   gnupg \
   graphviz \
+  groff \
   jq \
   make \
   nano \

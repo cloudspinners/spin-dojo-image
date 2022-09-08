@@ -8,7 +8,7 @@ on:
     workflow_dispatch:
 
 env:
-  TEST_TAG: kiefm/spin-dojo-image-base:test
+  TEST_TAG: kiefm/spin-dojo-image:test
   VERSION_NUMBER: _unset_
 
 jobs:
@@ -67,6 +67,6 @@ jobs:
           push: true
           build-args: EXTERNAL_VERSION_NUMBER=${{ env.VERSION_NUMBER }}
           tags: |
-            kiefm/spin-dojo-image-base:latest
-            kiefm/spin-dojo-image-base:${{ env.VERSION_NUMBER }}
+            kiefm/spin-dojo-image:latest
+            kiefm/spin-dojo-image:${{ env.VERSION_NUMBER }}
 

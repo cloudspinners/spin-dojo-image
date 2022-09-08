@@ -1,8 +1,15 @@
-# spin-dojo-image-base
+# spin-dojo-image
 
-This project builds a docker image that you can use with the [dojo](https://github.com/kudulab/dojo) tool to have a consistent local development environment for working with infrastructure code, with useful tools preinstalled.
+*NOTE:* _This is not a ready-to-use project, it's more like an executable cocktail napkin that I'm using to sketch out ideas for building, testing, and delivering infrastructure projects._
 
-Tested and released images are published to dockerhub as [kiefm/spin-dojo-image-base](https://hub.docker.com/r/kiefm/spin-dojo-image-base)
+This project builds a docker image that you can use with the [dojo](https://github.com/kudulab/dojo) tool to have a consistent local development environment for working with infrastructure code, with useful tools preinstalled. It is the base image for [spin-tools](https://github.com/cloudspinners/spin-tools), which adds some scripts that help to manage infrastructure projects.
+
+Tested and released images are published to dockerhub as [kiefm/spin-dojo-image](https://hub.docker.com/r/kiefm/spin-dojo-image).
+
+
+## What's in here
+
+In addition to basic useful utilities, the image includes terraform, inspec (rspec-based testing framework), bats (shell script-based testing framework), the aws CLI (note, this is an old version because of compatibility issues with Alpine linux not having glibc).
 
 
 # How-to guides
@@ -12,7 +19,7 @@ Tested and released images are published to dockerhub as [kiefm/spin-dojo-image-
 Create a Dojofile:
 
 ```
-DOJO_DOCKER_IMAGE="kiefm/spin-dojo-image-base:latest"
+DOJO_DOCKER_IMAGE="kiefm/spin-dojo-image:latest"
 ```
 
 By default, the current directory in the docker instance is `/dojo/work`.

@@ -1,3 +1,7 @@
+### 0.0.26 (2022-Sep-08)
+
+Upgrade Terraform to version 1.2.9, run localstack in a separate container using docker-compose.
+
 ### 0.0.25 (2022-Jul-06)
 
 Set SPIN_DOJO_BASE_VERSION variable in the container.

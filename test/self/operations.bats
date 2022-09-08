@@ -10,10 +10,10 @@ load "/opt/bats-assert/load.bash"
   assert_line --partial "x86_64"
   assert_equal "$status" 0
 }
-@test "correct terraform version is installed" {
+@test "expected terraform version is installed" {
   run terraform --version
   echo "output: $output"
-  assert_line --partial "Terraform v1.2.7"
+  assert_line --partial "Terraform v1.2.9"
   assert_equal "$status" 0
 }
 @test "any dot version is installed (graphviz)" {

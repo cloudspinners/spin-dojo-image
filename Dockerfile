@@ -129,7 +129,7 @@ RUN echo '%sudo ALL=(ALL) ALL' > /etc/sudoers.d/sudo
 RUN adduser dojo sudo
 
 # terraform
-ENV TERRAFORM_VERSION=1.2.7
+ENV TERRAFORM_VERSION=1.2.9
 RUN wget \
     --quiet \
       https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip && \

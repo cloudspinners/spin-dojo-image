@@ -18,10 +18,10 @@ load "${BATS_HELPER_DIR}/bats-assert/load.bash"
   refute_output --partial "root"
   assert_equal "$status" 0
 }
-@test "correct terraform version is installed" {
+@test "expected terraform version is installed" {
   run /bin/bash -c "dojo -c Dojofile.to_be_tested \"terraform --version\""
   echo "output: $output"
-  assert_line --partial "Terraform v1.2.7"
+  assert_line --partial "Terraform v1.2.9"
   assert_equal "$status" 0
 }
 @test "any dot version is installed (graphviz)" {

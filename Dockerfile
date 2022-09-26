@@ -3,7 +3,8 @@ FROM ruby:3.1.2-alpine3.16
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
 
 RUN apk add --update --no-cache \
-bash \
+  bash \
+  bind-tools \
   binutils \
   build-base \
   curl \

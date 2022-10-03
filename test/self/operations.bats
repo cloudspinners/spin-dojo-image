@@ -13,7 +13,13 @@ load "/opt/bats-assert/load.bash"
 @test "expected terraform version is installed" {
   run terraform --version
   echo "output: $output"
-  assert_line --partial "Terraform v1.2.9"
+  assert_line --partial "Terraform v1.3.1"
+  assert_equal "$status" 0
+}
+@test "steampipe is installed" {
+  run steampipe -v
+  echo "output: $output"
+  assert_line --partial "steampipe version"
   assert_equal "$status" 0
 }
 @test "any dot version is installed (graphviz)" {

@@ -123,6 +123,11 @@ ENV AWS_MAX_ATTEMPTS=10
 RUN uname -a
 RUN aws --version
 
+
+# steampipe
+RUN /bin/sh -c "$(curl -fsSL https://raw.githubusercontent.com/turbot/steampipe/main/install.sh)"
+RUN /bin/su - dojo -c '/usr/local/bin/steampipe plugin install steampipe aws terraform github docker'
+
 # Just for debugging
 RUN addgroup sudo
 RUN echo 'dojo:$1$IbdSg3K9$L3cVy0i00L6Jjr3G2cdr00' | chpasswd -e
@@ -130,7 +135,7 @@ RUN echo '%sudo ALL=(ALL) ALL' > /etc/sudoers.d/sudo
 RUN adduser dojo sudo
 
 # terraform
-ENV TERRAFORM_VERSION=1.2.9
+ENV TERRAFORM_VERSION=1.3.1
 RUN wget \
     --quiet \
       https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip && \

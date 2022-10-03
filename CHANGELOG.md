@@ -1,3 +1,7 @@
+### 0.0.27 (2022-Oct-03)
+
+Upgraded Terraform to 1.3.1, added steampipe
+
 ### 0.0.26 (2022-Sep-08)
 
 Upgrade Terraform to version 1.2.9, run localstack in a separate container using docker-compose.

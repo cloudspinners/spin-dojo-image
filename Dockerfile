@@ -52,8 +52,8 @@ RUN wget --tries=3 --retry-connrefused --wait=3 --random-wait \
   chmod +x ./assume-role-Linux && \
   mv ./assume-role-Linux /usr/bin/assume-role
 
-# So we can run inspec tests
-RUN gem install inspec inspec-bin
+# Testing support
+RUN gem install inspec inspec-bin test-kitchen
 
 COPY image/etc_dojo.d/scripts/* /etc/dojo.d/scripts/
 COPY image/inputrc /etc/inputrc

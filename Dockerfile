@@ -53,7 +53,7 @@ RUN wget --tries=3 --retry-connrefused --wait=3 --random-wait \
   mv ./assume-role-Linux /usr/bin/assume-role
 
 # Testing support
-RUN gem install inspec inspec-bin test-kitchen
+RUN gem install inspec inspec-bin test-kitchen kitchen-terraform
 
 COPY image/etc_dojo.d/scripts/* /etc/dojo.d/scripts/
 COPY image/inputrc /etc/inputrc

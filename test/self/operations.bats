@@ -1,4 +1,4 @@
-load "/opt/bats-support/load.bash"
+# load "/opt/bats-support/load.bash"
 load "/opt/bats-assert/load.bash"
 
 @test "SPIN_DOJO_BASE_VERSION environment variable is set" {
@@ -13,7 +13,7 @@ load "/opt/bats-assert/load.bash"
 @test "expected terraform version is installed" {
   run terraform --version
   echo "output: $output"
-  assert_line --partial "Terraform v1.3.2"
+  assert_line --partial "Terraform v1.3.3"
   assert_equal "$status" 0
 }
 @test "steampipe is installed" {

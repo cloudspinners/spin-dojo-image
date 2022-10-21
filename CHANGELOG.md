@@ -1,3 +1,7 @@
+### 0.0.28 (2022-Oct-21)
+
+Upgraded Terraform to 1.3.3, added test-kitchen
+
 ### 0.0.27 (2022-Oct-03)
 
 Upgraded Terraform to 1.3.1, added steampipe

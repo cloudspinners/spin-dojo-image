@@ -2,12 +2,12 @@ FROM ruby:3.1.2-alpine3.16
 
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
 
+RUN apk upgrade --no-cache
 RUN apk add --update --no-cache \
   bash \
   bind-tools \
   binutils \
   build-base \
-  curl \
   curl \
   curl-dev \
   font-bitstream-type1 \

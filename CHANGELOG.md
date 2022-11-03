@@ -1,3 +1,7 @@
+### 0.0.29 (2022-Nov-03)
+
+Upgraded Terraform to 1.3.4, some system library updates
+
 ### 0.0.28 (2022-Oct-21)
 
 Upgraded Terraform to 1.3.3, added test-kitchen

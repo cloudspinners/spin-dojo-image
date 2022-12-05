@@ -21,7 +21,7 @@ load "${BATS_HELPER_DIR}/bats-assert/load.bash"
 @test "expected terraform version is installed" {
   run /bin/bash -c "dojo -c Dojofile.to_be_tested \"terraform --version\""
   echo "output: $output"
-  assert_line --partial "Terraform v1.3.4"
+  assert_line --partial "Terraform v1.3.6"
   assert_equal "$status" 0
 }
 @test "steampipe is installed" {

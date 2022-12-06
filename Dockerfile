@@ -137,26 +137,26 @@ RUN adduser dojo sudo
 # tflint
 RUN curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
 
-ENV TERRAGRUNT_VERSION=0.42.3
-RUN wget \
+RUN export TERRAGRUNT_VERSION=$(curl -sL https://api.github.com/repos/gruntwork-io/terragrunt/releases/latest | jq -r .tag_name|sed 's/v//') ; \
+  wget \
     --quiet \
     -O /usr/local/bin/terragrunt \
     https://github.com/gruntwork-io/terragrunt/releases/download/v${TERRAGRUNT_VERSION}/terragrunt_linux_amd64 && \
     chmod 0755 /usr/local/bin/terragrunt
 
 # terraform
-ENV TERRAFORM_VERSION=1.3.6
-RUN wget \
-    --quiet \
-      https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip && \
-  wget --quiet \
-    -O terraform_${TERRAFORM_VERSION}_SHA256SUMS \
-    https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_SHA256SUMS && \
-  grep linux_amd64 terraform_${TERRAFORM_VERSION}_SHA256SUMS \
-    > mySHA256SUM.txt && \
-  sha256sum -cs mySHA256SUM.txt && \
-  unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip -d /usr/local/bin && \
-  rm -f terraform_${TERRAFORM_VERSION}_linux_amd64.zip
+RUN export TERRAFORM_VERSION=$(curl -sL https://releases.hashicorp.com/terraform/index.json | jq -r '.versions | keys | map(select(. | test("alpha") | not)) | last') ; \
+  wget \
+      --quiet \
+        https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip && \
+    wget --quiet \
+      -O terraform_${TERRAFORM_VERSION}_SHA256SUMS \
+      https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_SHA256SUMS && \
+    grep linux_amd64 terraform_${TERRAFORM_VERSION}_SHA256SUMS \
+      > mySHA256SUM.txt && \
+    sha256sum -cs mySHA256SUM.txt && \
+    unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip -d /usr/local/bin && \
+    rm -f terraform_${TERRAFORM_VERSION}_linux_amd64.zip
 
 COPY image/terraformrc /home/dojo/.terraformrc
 COPY image/terraform-providers.tf /home/dojo/

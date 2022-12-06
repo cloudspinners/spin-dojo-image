@@ -34,6 +34,12 @@ on_dojo() {
   assert_line --partial "TFLint version"
   assert_equal "$status" 0
 }
+@test "terragrunt is installed" {
+  run on_dojo "terragrunt --version"
+  echo "output: $output"
+  assert_line --partial "terragrunt version v"
+  assert_equal "$status" 0
+}
 @test "steampipe is installed" {
   run on_dojo "steampipe -v"
   echo "output: $output"

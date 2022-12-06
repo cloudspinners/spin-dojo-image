@@ -134,6 +134,9 @@ RUN echo 'dojo:$1$IbdSg3K9$L3cVy0i00L6Jjr3G2cdr00' | chpasswd -e
 RUN echo '%sudo ALL=(ALL) ALL' > /etc/sudoers.d/sudo
 RUN adduser dojo sudo
 
+# tflint
+RUN curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
+
 # terraform
 ENV TERRAFORM_VERSION=1.3.6
 RUN wget \

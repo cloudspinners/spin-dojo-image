@@ -10,10 +10,16 @@ load "/opt/bats-assert/load.bash"
   assert_line --partial "x86_64"
   assert_equal "$status" 0
 }
-@test "expected terraform version is installed" {
+@test "terraform is installed" {
   run terraform --version
   echo "output: $output"
-  assert_line --partial "Terraform v1.3.6"
+  assert_line --partial "Terraform v"
+  assert_equal "$status" 0
+}
+@test "tflint is installed" {
+  run tflint --version
+  echo "output: $output"
+  assert_line --partial "TFLint version"
   assert_equal "$status" 0
 }
 @test "steampipe is installed" {

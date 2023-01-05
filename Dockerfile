@@ -137,6 +137,9 @@ RUN adduser dojo sudo
 # tflint
 RUN curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
 
+# terragrunt
+# Get the version so the layer won't be cached when it changes
+RUN curl -sL https://api.github.com/repos/gruntwork-io/terragrunt/releases/latest | jq -r .tag_name|sed 's/v//'
 RUN export TERRAGRUNT_VERSION=$(curl -sL https://api.github.com/repos/gruntwork-io/terragrunt/releases/latest | jq -r .tag_name|sed 's/v//') ; \
   wget \
     --quiet \
@@ -145,6 +148,8 @@ RUN export TERRAGRUNT_VERSION=$(curl -sL https://api.github.com/repos/gruntwork-
     chmod 0755 /usr/local/bin/terragrunt
 
 # terraform
+# Get the version so the layer won't be cached when it changes
+RUN curl -sL https://releases.hashicorp.com/terraform/index.json | jq -r '.versions | keys | map(select(. | test("alpha") | not)) | last'
 RUN export TERRAFORM_VERSION=$(curl -sL https://releases.hashicorp.com/terraform/index.json | jq -r '.versions | keys | map(select(. | test("alpha") | not)) | last') ; \
   wget \
       --quiet \

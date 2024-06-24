@@ -1,3 +1,7 @@
+### 0.0.30 (2024-Jun-24)
+
+Many updates to tools and dependencies. Uses the current AWS CLI now that it's available on Alpine.
+
 ### 0.0.29 (2022-Nov-03)
 
 Upgraded Terraform to 1.3.4, some system library updates

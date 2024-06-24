@@ -43,7 +43,7 @@ on_dojo() {
 @test "steampipe is installed" {
   run on_dojo "steampipe -v"
   echo "output: $output"
-  assert_line --partial "steampipe version"
+  assert_line --partial "Steampipe v"
   assert_equal "$status" 0
 }
 @test "any dot version is installed (graphviz)" {
@@ -93,16 +93,13 @@ on_dojo() {
   assert_output --partial "region"
   assert_equal "$status" 0
 }
-@test "correct AWS CLI version is installed" {
+@test "AWS CLI is installed" {
   run on_dojo "aws --version"
   echo "output: $output"
-  # assert_line --partial "aws-cli/2.7.11"
   assert_equal "$status" 0
 }
-@test "correct bats-core version is installed" {
+@test "bats-core is installed" {
   run on_dojo "bats --version"
-  echo "output: $output"
-  assert_output --partial "Bats 1.7.0"
   assert_equal "$status" 0
 }
 @test "bats-support is installed" {

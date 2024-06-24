@@ -1,9 +1,10 @@
-FROM ruby:3.1.2-alpine3.16
+FROM ruby:3.3.3-alpine3.20
 
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
 
 RUN apk upgrade --no-cache
 RUN apk add --update --no-cache \
+  aws-cli \
   bash \
   bind-tools \
   binutils \
@@ -32,7 +33,7 @@ RUN apk add --update --no-cache \
 RUN ln -sf python3 /usr/bin/python
 
 # dojo helper script
-ENV DOJO_VERSION=0.11.0
+ENV DOJO_VERSION=0.13.0
 RUN git clone --depth 1 -b ${DOJO_VERSION} \
   https://github.com/kudulab/dojo.git /tmp/dojo_git && \
   /tmp/dojo_git/image_scripts/src/install.sh && \
@@ -60,7 +61,7 @@ COPY image/inputrc /etc/inputrc
 
 
 # bats for testing shell commands
-ENV BATS_CORE_VERSION=1.7.0
+ENV BATS_CORE_VERSION=1.11.0
 ENV BATS_HELPER_DIR=/opt
 
 RUN cd /tmp && \
@@ -73,59 +74,11 @@ RUN cd /tmp && \
 ENV BATS_SUPPORT_VERSION=0.3.0
 RUN git clone -b v${BATS_SUPPORT_VERSION} https://github.com/bats-core/bats-support.git ${BATS_HELPER_DIR}/bats-support
 
-ENV BATS_ASSERT_VERSION=2.0.0
+ENV BATS_ASSERT_VERSION=2.1.0
 RUN git clone -b v${BATS_ASSERT_VERSION} https://github.com/bats-core/bats-assert.git ${BATS_HELPER_DIR}/bats-assert
 
-
-# glibc (needed for awscli)
-
-# OPTION 1: Download it. Gives symbol not found errors
-# ENV GLIBC_VERSION=2.35-r0
-# RUN curl -sL \
-#       https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub \
-#       -o /etc/apk/keys/sgerrand.rsa.pub && \
-#     curl -sLO https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-${GLIBC_VERSION}.apk && \
-#     curl -sLO https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-bin-${GLIBC_VERSION}.apk && \
-#     curl -sLO https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-i18n-${GLIBC_VERSION}.apk && \
-#     apk add --no-cache \
-#       glibc-${GLIBC_VERSION}.apk \
-#       glibc-bin-${GLIBC_VERSION}.apk \
-#       glibc-i18n-${GLIBC_VERSION}.apk && \
-#     rm -f glibc-${GLIBC_VERSION}.apk glibc-bin-${GLIBC_VERSION}.apk glibc-i18n-${GLIBC_VERSION}.apk
-
-# OPTION 2: gcompat. Not compatible with awscli later than 2.1.39
-RUN apk add gcompat
-
-# OPTION 3: Build my own using https://github.com/sgerrand/docker-glibc-builder. Takes many hours to build, doesn't work.
-# COPY image/glibc-aarch64-2.35-bin.tar.gz /tmp/
-# RUN tar xzf /tmp/glibc-aarch64-2.35-bin.tar.gz -C /
-# RUN rm /tmp/glibc-aarch64-2.35-bin.tar.gz
-
-# awscli
-# ENV AWS_CLI_VERSION=2.7.12
-ENV AWS_CLI_VERSION=2.1.39
-# ENV AWS_CLI_VERSION=2.2.0
-ENV CPU_ARCH=x86_64
-COPY image/aws.gpg /opt/aws.gpg
-# TODO: Figure out how to support x86_64 and aarch64 with multi-cpu architecture support
-RUN curl -sL \
-    https://awscli.amazonaws.com/awscli-exe-linux-${CPU_ARCH}-${AWS_CLI_VERSION}.zip.sig \
-    -o awscliv2.sig && \
-  curl -sL "https://awscli.amazonaws.com/awscli-exe-linux-${CPU_ARCH}-${AWS_CLI_VERSION}.zip" \
-    -o "awscliv2.zip" && \
-  gpg --import /opt/aws.gpg && \
-  gpg --verify awscliv2.sig awscliv2.zip && \
-  unzip -q awscliv2.zip && \
-  ./aws/install && \
-  rm -rf awscliv2.zip
-ENV AWS_RETRY_MODE=standard
-ENV AWS_MAX_ATTEMPTS=10
-RUN uname -a
-RUN aws --version
-
-
 # steampipe
-RUN /bin/sh -c "$(curl -fsSL https://raw.githubusercontent.com/turbot/steampipe/main/install.sh)"
+RUN /bin/sh -c "$(curl -fsSL https://steampipe.io/install/steampipe.sh)"
 RUN /bin/su - dojo -c '/usr/local/bin/steampipe plugin install steampipe aws terraform github docker'
 
 # Just for debugging
